@@ -20,7 +20,7 @@ The architecture of this web service looks like this -
  - I took this as a personal project to actually learn docker and docker compose properly this time and then tried to self host the app on my homelab k3s cluster.
 
 
-## Module workings -- Outdated, will update with new ones soon
+## Module workings
 
 1. The NextJs frontend interacts with the FastAPI web server to fetch and display data.
 2. The FastAPI web server:
