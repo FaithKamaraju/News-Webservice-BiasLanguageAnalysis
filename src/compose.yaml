@@ -1,0 +1,125 @@
+services:
+  next-frontend:
+    container_name: newsapp-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: base
+    volumes:
+        - ./frontend/src:/app/src
+    environment:
+      - NODE_ENV=development
+    ports:
+      - 3000:3000
+    command: npm run dev
+    networks:
+      - frontend
+      - backend
+      
+  fastapi-server:
+    container_name: newsapp_backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: /run/secrets/pg_password
+      POSTGRES_DB: news_app_db
+      API_KEY: /run/secrets/api_key
+    secrets:
+      - pg_password
+      - api_key
+    ports:
+      - 8000:8000
+    restart: always
+    networks:
+      - backend
+    depends_on:
+      db:
+        condition: service_started
+      # inference_endpoint:
+      #   condition: service_healthy
+      #   restart: true
+
+  db:
+    container_name: newsapp_db
+    image: postgres:16.8-alpine3.21
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD_FILE=/run/secrets/pg_password
+      - POSTGRES_DB=news_app_db
+    expose:
+      - 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+    secrets:
+      - pg_password
+  # vllm:
+  #   image: vllm/vllm-openai:v0.8.1
+  #   container_name: vllm_inference_endpoint
+  #   runtime: nvidia  # Enables GPU support
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: all
+  #             capabilities: [gpu]
+  #   volumes:
+  #     - ~/.cache/huggingface:/root/.cache/huggingface  # Mounts Hugging Face cache
+  #   # environment:
+  #   #   HUGGING_FACE_HUB_TOKEN: "<secret>"  # Hugging Face API token
+  #   ports:
+  #     - 8001:8001
+  #   ipc: host  # Enables inter-process communication
+  #   command: 
+  #     - ["--model", "Qwen/Qwen2.5-Coder-3B-Instruct-GGUF"]
+  #   networks:
+  #     - backend
+
+  # inference_endpoint:
+  #   build:
+  #     context: ./inference_endpoint
+  #   ports:
+  #     - ${EXT_INFERENCE_PORT}:${INT_INFERENCE_PORT}
+  #   environment:
+  #     - PORT=${INT_INFERENCE_PORT}
+  #   restart: always
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: 1
+  #             capabilities: [gpu]
+  #   healthcheck:
+  #     test: curl --fail http://inference_endpoint:${EXT_INFERENCE_PORT}/health || exit 1
+  #     interval: 15s
+  #     timeout: 2s
+  #     retries: 5
+  #     start_period: 5s
+
+secrets:
+  pg_password:
+    file: ./secrets/pg_password.txt
+  api_key:
+    file: ./secrets/api_key.txt
+
+volumes:
+  postgres_data:
+    name: newsapp_db
+
+networks:
+  frontend:
+    external: true
+  backend:
+    external: true
+
+# docker run --runtime nvidia --gpus all \
+#     -v ~/.cache/huggingface:/root/.cache/huggingface \
+#     -p 8001:8001 \
+#     --ipc=host \
+#     vllm/vllm-openai:latest \
+#     --model Qwen/Qwen2.5-Coder-3B-Instruct-GGUF

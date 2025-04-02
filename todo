@@ -1,0 +1,7 @@
+Setup nvidia gpu docker image
+Setup a replacement inferencing server with vllm backend
+Integrate the vllm inferencing backend into the existing application
+Complete the application's front-end code.
+deploy a dev build onto the server
+Start making a single node k8s cluster for a start.
+Give final cost to dad for hardware.
