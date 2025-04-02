@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
       target: base
     volumes:
-        - ./frontend/src:/app/src
+      - ./frontend/src:/app/src
     environment:
       - NODE_ENV=development
     ports:
@@ -15,7 +15,7 @@ services:
     networks:
       - frontend
       - backend
-      
+
   fastapi-server:
     container_name: newsapp_backend
     build:
@@ -56,28 +56,6 @@ services:
       - backend
     secrets:
       - pg_password
-  # vllm:
-  #   image: vllm/vllm-openai:v0.8.1
-  #   container_name: vllm_inference_endpoint
-  #   runtime: nvidia  # Enables GPU support
-  #   deploy:
-  #     resources:
-  #       reservations:
-  #         devices:
-  #           - driver: nvidia
-  #             count: all
-  #             capabilities: [gpu]
-  #   volumes:
-  #     - ~/.cache/huggingface:/root/.cache/huggingface  # Mounts Hugging Face cache
-  #   # environment:
-  #   #   HUGGING_FACE_HUB_TOKEN: "<secret>"  # Hugging Face API token
-  #   ports:
-  #     - 8001:8001
-  #   ipc: host  # Enables inter-process communication
-  #   command: 
-  #     - ["--model", "Qwen/Qwen2.5-Coder-3B-Instruct-GGUF"]
-  #   networks:
-  #     - backend
 
   # inference_endpoint:
   #   build:
@@ -116,10 +94,3 @@ networks:
     external: true
   backend:
     external: true
-
-# docker run --runtime nvidia --gpus all \
-#     -v ~/.cache/huggingface:/root/.cache/huggingface \
-#     -p 8001:8001 \
-#     --ipc=host \
-#     vllm/vllm-openai:latest \
-#     --model Qwen/Qwen2.5-Coder-3B-Instruct-GGUF
