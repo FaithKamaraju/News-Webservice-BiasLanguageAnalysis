@@ -9,7 +9,7 @@ This is a multi-service architecture that includes the folowing components -
     4. An external Aphrodite LLM inferencing engine serving DeepSeek R1 Distill Llama 8B model.
 
 The architecture of this web service looks like this -
-![architecture diagram](<misc_assets/Webapp architecture mockup.png>)
+![architecture diagram](<misc_assets/Webapp architecture mockup_new.png>)
 
 ## What is this?
 
