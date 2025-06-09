@@ -1,21 +1,22 @@
-# News Webservice with AI powered Political Bias scores
+# News Webservice with LLM powered Bias Analysis
 
 
-This is a multi-service architecture that includes the folowing components -
+The architecture includes the folowing components -
 
     1. NextJs front-end
     2. FastAPI backend
     3. PostgreSQL database
     4. One of the free model endpoints hosted on together.ai
 
-The architecture of this web service looks like this -
+Architecture Diagram -
 ![architecture diagram](<misc_assets/Webapp architecture mockup_new.png>)
 
 ## What is this?
 
- - This is a "small" webservice that I built to replace my daily news feeds of google news. I tried ground news but I just found the whole UX extremely noisy and I didn't enjoy reading news there.
+ - This is a "small" webservice that I built to replace my daily news feed of google news. I tried ground news but I just found the whole UX extremely noisy which made me not enjoy reading news there.
 
- - Also Ground News didn't give me any analysis of bias language used in the articles and I was curious about how much biased language I was reading without realising it.
+ - Moreover, Ground News didn't have any analysis of bias language used in the articles and I was curious if LLM's could provide some insights into the bias of the articles.
+  - I understand that this is a very subjective topic and the bias analysis provided by the LLM's is not perfect, but I think it is a good starting point to understand how LLM's can be used to analyze text data.
 
 ## Module workings
 
