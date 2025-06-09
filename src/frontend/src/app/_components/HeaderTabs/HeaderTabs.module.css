@@ -5,7 +5,7 @@
     var(--mantine-color-dark-6)
   );
   border-bottom: 1px solid light-dark(var(--mantine-color-gray-2), transparent);
-  margin-bottom: 60px;
+  margin-bottom: 2rem;
 }
 
 .mainSection {
@@ -41,6 +41,11 @@
   &::before {
     display: none;
   }
+
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .tab {
@@ -78,9 +83,16 @@
   }
 }
 
+.search {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 .input {
   background-color: #3c4043;
   &::placeholder {
     color: #bbbcbd;
   }
+  width: 100%;
 }

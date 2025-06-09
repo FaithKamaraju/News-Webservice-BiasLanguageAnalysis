@@ -1,4 +1,3 @@
-// "use client";
 import Link from "next/link";
 import {
   IconBrandBluesky,
@@ -6,16 +5,13 @@ import {
   IconBrandLinkedin,
 } from "@tabler/icons-react";
 import { ActionIcon, Container, Group, Text } from "@mantine/core";
-import Logo from "./Logo";
+import Logo from "../Logo";
 import classes from "./FooterLinks.module.css";
 
 const data = [
   {
     title: "Project",
-    links: [
-      { label: "About", link: "/about" },
-      { label: "Features", link: "/features" },
-    ],
+    links: [{ label: "About", link: "/about" }],
   },
 ];
 

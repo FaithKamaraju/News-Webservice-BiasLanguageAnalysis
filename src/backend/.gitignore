@@ -2,4 +2,6 @@
 *.json
 *.csv
 dev.env
+*.html
+test.md
 

@@ -1,0 +1,35 @@
+.headingContainer {
+  margin-left: 16rem;
+  margin-right: 16rem;
+  /* margin-bottom: 2rem; */
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.headingContainer h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.headingContainer h2 {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: #666;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.headingContainer p {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+
+.headingContainer hr {
+  border: none;
+  border-top: 2px solid var(--mantine-color-blue-5);
+  margin-top: 1.5rem;
+}

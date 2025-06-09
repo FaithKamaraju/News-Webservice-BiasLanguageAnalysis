@@ -38,4 +38,6 @@ env_activation.sh
 *.csv
 *.json
 .gitignore
+*.html
+*.md
 

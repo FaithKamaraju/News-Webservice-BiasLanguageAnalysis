@@ -38,22 +38,22 @@ async def _fetch_data(session, url, params, retries=3, backoff=2):
                     await asyncio.sleep(backoff)
                     backoff *= 2  # Exponential backoff
                 elif e.status == 400:  # Bad request
-                    raise HTTPBadRequest(detail="Validation of parameters failed. The failed parameters are usually shown in the error message.")
+                    raise HTTPBadRequest(text="Validation of parameters failed. The failed parameters are usually shown in the error message.")
                 elif e.status == 401:  # Unauthorized
-                    raise HTTPUnauthorized(detail="Invalid API token.")
+                    raise HTTPUnauthorized(text="Invalid API token.")
                 elif e.status == 402: # Usage limit has been reached
-                    raise HTTPClientError(status_code=402, detail="Usage limit of your plan has been reached. Usage limit and remaining requests can be found on the X-UsageLimit-Limit header.")
+                    raise HTTPClientError(status_code=402, text="Usage limit of your plan has been reached. Usage limit and remaining requests can be found on the X-UsageLimit-Limit header.")
                 elif e.status == 404:  # Not found
-                    raise HTTPNotFound(detail="Resource not found. Please check your request parameters.")
+                    raise HTTPNotFound(text="Resource not found. Please check your request parameters.")
                 elif e.status == 500:  # Server error
-                    raise HTTPInternalServerError(detail="Internal server error. Please try again later.")
+                    raise HTTPInternalServerError(text="Internal server error. Please try again later.")
                 elif e.status == 503:  # Service unavailable
-                    raise HTTPServiceUnavailable(detail="Service unavailable. Please try again later.")
+                    raise HTTPServiceUnavailable(text="Service unavailable. Please try again later.")
                 else:
-                    raise HTTPError(detail="This status code is not implemented in the error handling.")
+                    raise HTTPError(text="This status code is not implemented in the error handling.")
     
 
-async def _get_article_metadata_per_domain(session, url, api_key, category):
+async def _get_article_metadata_per_category(session, url, api_key, category):
     
     todays_date = datetime.today().strftime('%Y-%m-%d')
     params = {"api_token":api_key,
@@ -69,12 +69,12 @@ async def _get_article_metadata_per_domain(session, url, api_key, category):
 async def get_top_article_metadata(api_key, **kwargs):
     article_data = []
     # domains = kwargs.get("domains",["nbcnews.com","vox.com","cbc.ca"])
-    categories = kwargs.get("categories",["general","science", "sports", "business", "health", "entertainment", "tech", "politics", "food", "travel"])
+    categories = kwargs.get("categories",["general","science", "health", "tech", "politics",])
     top_url = "https://api.thenewsapi.com/v1/news/top"
     
     async with aiohttp.ClientSession() as session:
         for category in categories:
-            top_stories = await _get_article_metadata_per_domain(session, top_url, api_key, category)
+            top_stories = await _get_article_metadata_per_category(session, top_url, api_key, category)
             if top_stories:
                 article_data = article_data + top_stories
         

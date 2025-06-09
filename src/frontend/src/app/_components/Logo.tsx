@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function Logo() {
   return (
-    <Link href="/">
+    <Link href="/General">
       <Group align="center">
         <ThemeIcon size={"xl"}>
           <IconBrandFlipboard />

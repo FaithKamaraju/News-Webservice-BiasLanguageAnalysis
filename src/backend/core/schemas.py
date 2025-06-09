@@ -1,13 +1,13 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime
 
 
-class NewsArticleMetaDataSchema(BaseModel):
+class ArticleMetaDataSchema(BaseModel):
     """
-        'id', 'uuid', 'title', 'description', 'url',
+        'uuid', 'title', 'description', 'url',
        'image_url', 'published_at', 'source', 'categories',
     """
-    id: int
+
     uuid : str
     title : str
     description : str 
@@ -18,24 +18,28 @@ class NewsArticleMetaDataSchema(BaseModel):
     categories : str
     
 class InferenceResultsRespSchema(BaseModel):
+    """
+        'uuid', 'bias_analysis'
+    """
     
     uuid : str
-    bias_score : float
-    bias_label :  str
-    sentiment_score : float
-    sentiment_label : str
+    bias_analysis : str
     
     
 class NewsArticleRespSchema(BaseModel):
-    
+    """
+        'uuid', 'title', 'url', 'image_url', 'published_at', 'source',
+        'categories', 'scrapped_content', 'bias_analysis'
+    """
+
     uuid : str
-    title : str
-    description : str 
+    title : str 
     url : str
     image_url : str
     published_at : datetime
     source : str
     categories : str
     scrapped_content : str
-    # bias : float
-    # sentiment_score : float
+    bias_analysis : str
+
+    

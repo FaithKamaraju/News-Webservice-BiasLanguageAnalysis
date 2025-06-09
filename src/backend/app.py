@@ -3,8 +3,7 @@ import uvicorn
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from contextlib import asynccontextmanager
-import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
@@ -39,17 +38,17 @@ app.include_router(articles.router)
 
 
 
-@app.post("/inference/{uuid}", tags=["inference"])
-async def rerun_inference(uuid:str, db : AsyncSession = Depends(get_db)) -> InferenceResultsRespSchema:
+# @app.post("/inference/{uuid}", tags=["inference"])
+# async def rerun_inference(uuid:str, db : AsyncSession = Depends(get_db)) -> InferenceResultsRespSchema:
     
-    result = await db.execute(select(ScrappedContent).filter(ScrappedContent.uuid == uuid))
-    scrapped_content = result.scalars().first()
-    inference_result = await infer(uuid, scrapped_content.scrapped_content)
-    # inference_results_obj = InferenceResults(**inference_result)
-    # db.add(inference_results_obj)
-    # await db.commit()
+#     result = await db.execute(select(ScrappedContent).filter(ScrappedContent.uuid == uuid))
+#     scrapped_content = result.scalars().first()
+#     inference_result = await infer(uuid, scrapped_content.scrapped_content)
+#     # inference_results_obj = InferenceResults(**inference_result)
+#     # db.add(inference_results_obj)
+#     # await db.commit()
     
-    return inference_result
+#     return inference_result
 
 
 

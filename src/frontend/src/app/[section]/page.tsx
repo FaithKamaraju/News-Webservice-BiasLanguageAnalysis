@@ -1,9 +1,11 @@
-"use client";
-import { Container, Grid, SimpleGrid, Skeleton, Title } from "@mantine/core";
-import NewsCardLarge from "./NewsCardLarge";
-import NewsCardSmall from "./NewsCardSmall";
+import { Container, Grid, SimpleGrid, Title, GridCol } from "@mantine/core";
 
-import classes from "./TopStoriesSections.module.css";
+import { NewsCardLarge } from "./_components/NewsCardLarge/NewsCardLarge";
+import { NewsCardSmall } from "./_components/NewsCardSmall/NewsCardSmall";
+
+import classes from "./_components/Section.module.css";
+
+// import styles from "./page.module.css";
 
 const mockdata = {
   uuid: "ebd7dace-7c4c-42c5-86a8-686063801c00",
@@ -25,22 +27,11 @@ const mockdata = {
   locale: "us",
 };
 
-const categories = [
-  "General",
-  "Science",
-  "Sports",
-  "Business",
-  "Health",
-  "Entertainment",
-  "Tech",
-  "Politics",
-  "Food",
-  "Travel",
-];
+// const categories = ["General", "Science", "Health", "Tech", "Politics"];
 
 function SingleSection(props: { data: CardData; label: string }) {
-  const PRIMARY_COL_HEIGHT = "400px";
-  const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
+  //   const PRIMARY_COL_HEIGHT = "400px";
+  //   const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
   // style={{ paddingTop: "var(--mantine-spacing-xl)" }}
   return (
     <Container my="md" size="xl">
@@ -50,24 +41,24 @@ function SingleSection(props: { data: CardData; label: string }) {
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
         <NewsCardLarge data={mockdata} />
         <Grid gutter="md">
-          <Grid.Col>
+          <GridCol>
             <NewsCardSmall data={mockdata} />
-          </Grid.Col>
-          <Grid.Col>
+          </GridCol>
+          <GridCol>
             <NewsCardSmall data={mockdata} />
-          </Grid.Col>
+          </GridCol>
         </Grid>
       </SimpleGrid>
     </Container>
   );
 }
 
-export default function TopStoriesSections() {
-  const PRIMARY_COL_HEIGHT = "400px";
-  const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
-  const sections = categories.map((category: string) => {
-    return <SingleSection key={category} label={category} data={mockdata} />;
-  });
+export default async function Section({
+  params,
+}: {
+  params: Promise<{ section: string }>;
+}) {
+  const { section } = await params;
 
-  return <>{sections}</>;
+  return <SingleSection key={section} label={section} data={mockdata} />;
 }

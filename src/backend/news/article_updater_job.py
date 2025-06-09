@@ -3,8 +3,8 @@ from news.site_scraper import pull_content_from_url
 from sqlalchemy import select
 
 from core.db import async_session_local
-from core.models import NewsArticle, ScrappedContent, InferenceResults
-from core.inference import infer_batch
+from core.models import ArticleMetadata, NewsArticleFinal, ScrappedContent, InferenceResults
+from core.inference import async_together_inference
 
 
 # stmt = text("""
@@ -16,28 +16,28 @@ async def pull_and_add(api_key:str):
     print("Pulling and adding articles")
     article_data = await get_top_article_metadata(api_key)
     
-    async with async_session_local()as session :
+    async with async_session_local()as session : # type: ignore
         inference_uuids = []
         inference_content = []
         for article in article_data:
-            exists = await session.scalars(select(NewsArticle).filter(NewsArticle.uuid == article['uuid']))
+            exists = await session.scalars(select(ArticleMetadata).filter(ArticleMetadata.uuid == article['uuid']))
             
             if not exists.first():
-                article_text = pull_content_from_url(article['url'])
+                markdown = pull_content_from_url(article['url'])
                 
-                if article_text:
+                if markdown:
                     
-                    news_article = NewsArticle(**article)
+                    news_article = ArticleMetadata(**article)
                     
-                    scrapped_content = ScrappedContent(uuid=article['uuid'], scrapped_content=article_text)
+                    scrapped_content = ScrappedContent(uuid=article['uuid'], scrapped_content=markdown)
                     
                     session.add(news_article)
                     session.add(scrapped_content)
                     inference_uuids.append(article['uuid'])
-                    inference_content.append(article_text)
+                    inference_content.append(markdown)
                 print(f"Added article {article['title']} to database")
                 
-        inference_results = await infer_batch(inference_uuids, inference_content)
+        inference_results = await async_together_inference(inference_uuids, inference_content)
         inference_results_objs = [InferenceResults(**result) for result in inference_results]
         session.add_all(inference_results_objs)
         await session.commit()

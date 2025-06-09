@@ -1,16 +1,8 @@
 import Link from "next/link";
-import {
-  ActionIcon,
-  Badge,
-  Button,
-  Card,
-  Group,
-  Image,
-  Text,
-} from "@mantine/core";
+import { Badge, Card, Group, Image, Text, CardSection } from "@mantine/core";
 import classes from "./NewsCardLarge.module.css";
 
-export default function NewsCardLarge(props: { data: CardData }) {
+export function NewsCardLarge(props: { data: CardData }) {
   const {
     uuid,
     title,
@@ -26,16 +18,16 @@ export default function NewsCardLarge(props: { data: CardData }) {
   return (
     <Link href={`/articles/${uuid}`}>
       <Card withBorder radius="md" p="md" className={classes.card}>
-        <Card.Section>
+        <CardSection>
           <Image
             src={image_url}
             alt={title}
             height={180}
             fallbackSrc="https://placehold.co/600x400?text=Placeholder"
           />
-        </Card.Section>
+        </CardSection>
 
-        <Card.Section className={classes.section} mt="md">
+        <CardSection className={classes.section} mt="md">
           <Group justify="apart">
             <Text fz="lg" fw={500}>
               {title}
@@ -47,9 +39,9 @@ export default function NewsCardLarge(props: { data: CardData }) {
           <Text fz="sm" mt="xs">
             {description}
           </Text>
-        </Card.Section>
+        </CardSection>
 
-        <Card.Section className={classes.section}>
+        <CardSection className={classes.section}>
           <Text mt="md" className={classes.label} c="dimmed">
             Categories this article belongs to
           </Text>
@@ -60,7 +52,7 @@ export default function NewsCardLarge(props: { data: CardData }) {
               </Badge>
             ))}
           </Group>
-        </Card.Section>
+        </CardSection>
       </Card>
     </Link>
   );

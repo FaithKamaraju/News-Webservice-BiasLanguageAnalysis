@@ -37,9 +37,6 @@ services:
     depends_on:
       db:
         condition: service_started
-      # inference_endpoint:
-      #   condition: service_healthy
-      #   restart: true
 
   db:
     container_name: newsapp_db
@@ -56,28 +53,6 @@ services:
       - backend
     secrets:
       - pg_password
-
-  # inference_endpoint:
-  #   build:
-  #     context: ./inference_endpoint
-  #   ports:
-  #     - ${EXT_INFERENCE_PORT}:${INT_INFERENCE_PORT}
-  #   environment:
-  #     - PORT=${INT_INFERENCE_PORT}
-  #   restart: always
-  #   deploy:
-  #     resources:
-  #       reservations:
-  #         devices:
-  #           - driver: nvidia
-  #             count: 1
-  #             capabilities: [gpu]
-  #   healthcheck:
-  #     test: curl --fail http://inference_endpoint:${EXT_INFERENCE_PORT}/health || exit 1
-  #     interval: 15s
-  #     timeout: 2s
-  #     retries: 5
-  #     start_period: 5s
 
 secrets:
   pg_password:
